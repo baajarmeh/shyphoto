@@ -1,0 +1,78 @@
+<div class="bg-white rounded-lg shadow min-h-screen">
+  <div class="max-w-3xl mx-auto">
+    <div class="flex flex-col sm:flex-row items-center sm:justify-around  px-6 py-4">
+      <% if @user.avatar.attached?%>
+      <div>
+        <%= image_tag  @user.avatar, class:"rounded-full my-5 h-32 w-32 shadow-lg  " %>
+      </div>
+      <%else%>
+      <%= image_tag("dp.png", :alt => "Default DP", class:"rounded-full my-5 h-32 w-32 shadow-lg " ) %>
+      <%end%>
+      <div class="py-3">
+        <div class="flex justify-between">
+          <%if @user.name?%>
+          <h3 class="text-black text-3xl font-bold text-primary-700 py-3 pr-3"><%=@user.name%></h3>
+          <%else%>
+          <h3 class="text-black text-3xl font-bold text-primary-700 py-3 pr-3">Anonymous User</h3>
+          <%end%>
+          <% if @user.id == current_user&.id%>
+          <a href="<%= edit_user_path(@user) %>" class="pt-5">
+            <button class=" btn btn-primary-ghost"> Edit Profile</button>
+          </a>
+          <%end%>
+        </div>
+        <div class="flex justify-between">
+          <div class="pr-4">
+            <h5 class="font-black text-primary-900"><%=@posts.count %> <span class="font-normal ">Posts</span></h5>
+          </div>
+          <div class="pr-4">
+            <h5 class="font-black text-primary-900">324 <span class="font-normal">Followers</span></h5>
+          </div>
+          <div>
+            <h5 class="font-black text-primary-900">412 <span class="font-normal">Following</span></h5>
+          </div>
+        </div>
+        <h4 class="pt-1 text-primary-900">
+          <%=@user.bio%>
+        </h4>
+        <a href="https://<%=@user.website%>" class="text-blue-700 pt-1" target="blank"><%=@user.website%></a>
+        <div class="flex flex-col sm:flex-row justify-between ">
+          <div class="flex mt-2 ">
+            <i class="animate-pulse fas fa-map-marker-alt text-primary-500 text-lg"> </i>
+            <p class="ml-2 text-sm font-bold text-primary-900">Location </p>
+          </div>
+          <div class="flex mt-2 ml-2">
+            <i class="animate-pulse fas fa-birthday-cake text-primary-500 text-lg"></i>
+            <p class="ml-2 text-sm font-bold text-primary-900">Birthday </p>
+          </div>
+          <div class="flex mt-2 ml-2">
+            <i class="animate-pulse fas fa-calendar-alt text-primary-500 text-lg"></i>
+            <p class="ml-2 text-sm font-bold text-primary-900">Joined <%=@user.created_at.strftime("%B %Y")%> </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="border-primary-100 mt-6" />
+  <div class=" flex flex-wrap  max-w-3xl mx-auto py-4 justify-start">
+    <% @posts.each do |post| %>
+    <% if post.image.attached?%>
+    <%= link_to post_path(post), class: "p-4" do %>
+    <%= image_tag post.image ,class:"relative rounded-lg shadow-lg  object-cover h-56 w-56 bg-auto"%>
+    <div class="flex mt-2 ">
+      <div class="flex  ">
+        <i class="fas fa-heart text-primary-400 text-sm"></i>
+        <h3 class="ml-2 text-xs text-gray-600 "><%= post.likes.count %><%=post.likes.count <= 1 ? " like" : " likes"%></h3>
+      </div>
+      <div class="flex ml-4">
+        <i class="fas fa-comment-alt text-primary-400 text-sm"></i>
+        <h3 class="ml-2 text-xs text-gray-600 "><%=  post.comments.count %><%= post.comments.count <= 1 ? " Comment" : " Comments"%></h3>
+      </div>
+    </div>
+
+
+    <%end%>
+    <%end%>
+    <%end%>
+  </div>
+</div>
